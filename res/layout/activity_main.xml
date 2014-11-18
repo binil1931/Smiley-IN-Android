@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1" >
+
+    <ImageView
+        android:id="@+id/smile"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight=".1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_smiley" />
+        
+    <EditText
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".7"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/post"
+        android:layout_toRightOf="@+id/smile"
+        android:gravity="center" />
+
+       <Button
+        android:id="@+id/post"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".2"
+        android:layout_alignBaseline="@+id/text"
+        android:layout_alignBottom="@+id/text"
+        android:layout_alignParentRight="true"
+        android:text="Send" />
+
+    <LinearLayout
+        android:id="@+id/footer_for_emoticons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/keyboard_height"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+
+ 
+
+</LinearLayout>
