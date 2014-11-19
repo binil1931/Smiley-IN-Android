@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 import com.binil.smiley_in_android.EmoticonsGridAdapter.KeyClickListener;
 
-
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -22,8 +21,10 @@ import android.text.Spanned;
 import android.text.Html.ImageGetter;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -50,6 +51,7 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 
 	EditText content;
 	ImageView emoticonsButton;
+	TextView msg;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +59,28 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		emoticonsButton = (ImageView) findViewById(R.id.smile);
+		emoticonsButton = (ImageView) findViewById(R.id.emoticons_button);
 		popUpView = getLayoutInflater().inflate(R.layout.emoticons_popup, null);
 		parentLayout = (LinearLayout) findViewById(R.id.list_parent);
 		emoticonsCover = (LinearLayout) findViewById(R.id.footer_for_emoticons);
-
+		msg  = (TextView) findViewById(R.id.msg);
+		
+		msg.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (popupWindow.isShowing())
+					popupWindow.dismiss();	
+				return false;
+			}
+		});
+		
+		// Defining default height of keyboard which is equal to 230 dip
+				final float popUpheight = getResources().getDimension(
+						R.dimen.keyboard_height);
+				changeKeyboardHeight((int) popUpheight);
+				
+				
 		emoticonsButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -91,13 +110,27 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 		enableFooterView();
 	}
 
+	
+	/**
+	 * Overriding onKeyDown for dismissing keyboard on key down
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (popupWindow.isShowing()) {
+			popupWindow.dismiss();
+			return false;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
+	}
+	
 
 	/**
 	 * Enabling all content in footer i.e. post window
 	 */
 	private void enableFooterView() {
 
-		content = (EditText) findViewById(R.id.text);
+		content = (EditText) findViewById(R.id.chat_content);
 		content.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -111,7 +144,7 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 				
 			}
 		});
-		final Button postButton = (Button) findViewById(R.id.post);		
+		final Button postButton = (Button) findViewById(R.id.post_button);		
 		
 		postButton.setOnClickListener(new OnClickListener() {
 
@@ -119,11 +152,7 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 			public void onClick(View v) {
 
 				if (content.getText().toString().length() > 0) {
-					
-//					Spanned sp = content.getText();					
-//					chats.add(sp);
-//					content.setText("");					
-//					mAdapter.notifyDataSetChanged();
+				msg.setText(content.getText());					
 
 				}
 
@@ -144,24 +173,8 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 		}
 
 
-		/**
-		 * change height of emoticons keyboard according to height of actual
-		 * keyboard
-		 * 
-		 * @param height
-		 *            minimum height by which we can make sure actual keyboard is
-		 *            open or not
-		 */
-		private void changeKeyboardHeight(int height) {
-
-			if (height > 100) {
-				keyboardHeight = height;
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.MATCH_PARENT, keyboardHeight);
-				emoticonsCover.setLayoutParams(params);
-			}
-
-		}
+		
+		
 
 		
 		/**
@@ -204,6 +217,24 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 
 		}
 		
+		/**
+		 * change height of emoticons keyboard according to height of actual
+		 * keyboard
+		 * 
+		 * @param height
+		 *            minimum height by which we can make sure actual keyboard is
+		 *            open or not
+		 */
+		private void changeKeyboardHeight(int height) {
+
+			if (height > 100) {
+				keyboardHeight = height;
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LayoutParams.MATCH_PARENT, keyboardHeight);
+				emoticonsCover.setLayoutParams(params);
+			}
+
+		}
 		/**
 		 * Defining all components of emoticons keyboard
 		 */
