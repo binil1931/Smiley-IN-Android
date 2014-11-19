@@ -1,12 +1,10 @@
 package com.binil.smiley_in_android;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.binil.smiley_in_android.EmoticonsGridAdapter.KeyClickListener;
-
-import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,8 +15,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.Html.ImageGetter;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -35,10 +34,12 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
+import com.binil.smiley_in_android.EmoticonsGridAdapter.KeyClickListener;
+
 public class MainActivity extends FragmentActivity implements KeyClickListener {
 
 
-	private static final int NO_OF_EMOTICONS = 54;
+	private static int NO_OF_EMOTICONS ;
 
 	private PopupWindow popupWindow;
 	private int keyboardHeight;	
@@ -59,6 +60,19 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		AssetManager assetManager = getAssets();
+		
+		try 
+		{
+			String[] files = assetManager.list("emoticons");
+			Log.e("tag ", "length " + files.length);
+			NO_OF_EMOTICONS = files.length;
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		emoticonsButton = (ImageView) findViewById(R.id.emoticons_button);
 		popUpView = getLayoutInflater().inflate(R.layout.emoticons_popup, null);
 		parentLayout = (LinearLayout) findViewById(R.id.list_parent);
@@ -171,10 +185,6 @@ public class MainActivity extends FragmentActivity implements KeyClickListener {
 			}
 
 		}
-
-
-		
-		
 
 		
 		/**

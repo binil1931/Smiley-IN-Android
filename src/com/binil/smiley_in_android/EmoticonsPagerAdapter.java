@@ -7,13 +7,14 @@ import com.binil.smiley_in_android.EmoticonsGridAdapter.KeyClickListener;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 
 public class EmoticonsPagerAdapter extends PagerAdapter {
 
 	ArrayList<String> emoticons;
-	private static final int NO_OF_EMOTICONS_PER_PAGE = 20;
+	private static final int NO_OF_EMOTICONS_PER_PAGE = 30;
 	FragmentActivity mActivity;
 	KeyClickListener mListener;
 
@@ -39,6 +40,11 @@ public class EmoticonsPagerAdapter extends PagerAdapter {
 		int initialPosition = position * NO_OF_EMOTICONS_PER_PAGE;
 		ArrayList<String> emoticonsInAPage = new ArrayList<String>();
 
+		Log.e("tag", "initialPosition " +  initialPosition);
+		Log.e("tag", " NO_OF_EMOTICONS_PER_PAGE) " +  NO_OF_EMOTICONS_PER_PAGE);
+		Log.e("tag", "position " +  position);
+		Log.e("tag", " emoticons.size() " +  emoticons.size());
+		
 		for (int i = initialPosition; i < initialPosition
 				+ NO_OF_EMOTICONS_PER_PAGE
 				&& i < emoticons.size(); i++) {
